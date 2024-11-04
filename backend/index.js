@@ -2,14 +2,15 @@ const express = require("express");
 const app = express();
 const { createtodos, completedtodos } = require("./type.js");
 const { Todo } = require("./db.js");
-const { connectdb } = require("./db.js");
+const { use } = require("react");
+// const { connectdb } = require("./db.js");
 
 const port = 3000;
 
 app.use(express.json());
 
 app.post("/createtodos", async function (req, res) {
-  const requiredpayload = createtodos.safeparse(req.body);
+  const requiredpayload = createtodos.safeParse(req.body);
   if (!requiredpayload.success) {
     res.status(411).json({
       message: "Invalid Inputs",
@@ -21,8 +22,8 @@ app.post("/createtodos", async function (req, res) {
     because it is call to database and data failure may be there as well as database call require time to respond
     */
   await Todo.create({
-    title: res.body.title,
-    description: res.body.description,
+    title: req.body.title,
+    description: req.body.description,
     completed: false,
   });
 
@@ -39,12 +40,26 @@ app.post("/createtodos", async function (req, res) {
 // for example: Todo.find({id: 1})
 
 app.get("/gettodos", async function (req, res) {
+  // database.collection("todos", function (err, collection) {
+  //   if (err) {
+  //     throw err;
+  //   } else {
+  //     collection.find().toArray(function (err, results) {
+  //       if (err) {
+  //         throw err;
+  //       }
+  const users = await Todo.find({});
+  res.status(200).json(users);
+  //     });
+  //   }
+  // });
   //const todos = await Todo.find({});
-  res.status(200).json({ todos: [] });
+  //   res.status(200).json({ todos: [] });
+  // });
 });
 
 app.put("/completedtodos", async function (req, res) {
-  const requiredpayload = completedtodos.safeparse(req.body);
+  const requiredpayload = completedtodos.safeParse(req.body);
   if (!requiredpayload.success) {
     res.status(411).json({
       message: "Invalid Inputs",
@@ -68,6 +83,6 @@ app.put("/completedtodos", async function (req, res) {
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-  console.log(connectdb);
-  connectdb();
+  //   console.log(connectdb);
+  //   connectdb();
 });
