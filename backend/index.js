@@ -3,11 +3,17 @@ const app = express();
 const { createtodos, completedtodos } = require("./type.js");
 const { Todo } = require("./db.js");
 const { use } = require("react");
+const cors = require("cors");
 // const { connectdb } = require("./db.js");
 
 const port = 3000;
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 
 app.post("/createtodos", async function (req, res) {
   const requiredpayload = createtodos.safeParse(req.body);
@@ -48,14 +54,14 @@ app.get("/gettodos", async function (req, res) {
   //       if (err) {
   //         throw err;
   //       }
-  const users = await Todo.find({});
-  res.status(200).json(users);
+  // const users = await Todo.find({});
+  // res.status(200).json(users);
   //     });
   //   }
   // });
-  //const todos = await Todo.find({});
-  //   res.status(200).json({ todos: [] });
-  // });
+  const todos = await Todo.find({});
+  res.status(200).json({ todos: todos });
+  // //});
 });
 
 app.put("/completedtodos", async function (req, res) {
