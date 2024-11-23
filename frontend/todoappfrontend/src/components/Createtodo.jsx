@@ -9,7 +9,7 @@ export function Createtodo(props) {
         <input
           type="text"
           placeholder="Description"
-          onchange={function (e) {
+          onChange={function (e) {
             setDescription(e.target.value);
           }}
         />
@@ -18,7 +18,7 @@ export function Createtodo(props) {
         <input
           type="text"
           placeholder="Title"
-          onchange={function (e) {
+          onChange={function (e) {
             setTitle(e.target.value);
           }}
         />
@@ -36,7 +36,7 @@ export function Createtodo(props) {
               headers: {
                 "Content-Type": "application/json",
               },
-            }).then(async function () {
+            }).then(async function (res) {
               const json = await res.json();
               alert("Data Saved Successfully");
             })

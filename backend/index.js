@@ -17,6 +17,7 @@ app.use(
 
 app.post("/createtodos", async function (req, res) {
   const requiredpayload = createtodos.safeParse(req.body);
+  console.log(requiredpayload);
   if (!requiredpayload.success) {
     res.status(411).json({
       message: "Invalid Inputs",
